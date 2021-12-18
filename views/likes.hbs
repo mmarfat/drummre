@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/search.css">
+        <title>Next Episode</title>
+    </head>
+
+    <body>
+        <h3>Liked TV Shows:</h3>
+        {{#if shows}}
+        <main id="mymain">
+            {{#each shows}}
+            <div class="show">
+                <img src="{{image}}" alt="{{name}}" />
+                <div class="show-info">
+                    <h3>{{name}}</h3>
+                    <span>{{rating}}</span>
+                </div>
+                <form action="/shows/{{id}}" method="POST" id="delete-form">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn red">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+            </div>
+            {{/each}}
+        </main>
+        {{else}}
+        <p>You have not liked any shows.</p>
+        {{/if}}
+
+    </body>
+
+</html>
