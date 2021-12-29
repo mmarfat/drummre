@@ -7,11 +7,12 @@ const path = require("path");
 
 const Show = require('../models/Show')
 const Quote = require('../models/Quote')
+const Recommended = require('../models/Recommended')
 
 const ContentBasedRecommender = require('content-based-recommender')
 
 // Osnovno preporučivanje -> problem (API) nema sve serije dostupne odjednom.
-const recommender = new ContentBasedRecommender({
+/*const recommender = new ContentBasedRecommender({
     minScore: 0.1,
     maxSimilarDocuments: 5
 })
@@ -28,6 +29,23 @@ documents.forEach(document => {
 
 recommender.train(strippedDocuments)
 
+const recommenderObject = recommender.export()
+//await Recommender.create()
+var recObjectStringified = JSON.stringify(recommenderObject);
+
+fs.writeFile(path.resolve(__dirname, "../public/data/recommender.json"), recObjectStringified, function (err) {
+    if (err) {
+        console.log('There has been an error saving your configuration data.');
+        console.log(err.message);
+        return;
+    }
+    console.log('Configuration saved successfully.')
+});*/
+
+// Model može biti istreniran prethodno i onda pohranjen u JSON datoteku.
+const object = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../public/data/recommender.json")))
+const recommender = new ContentBasedRecommender();
+recommender.import(object);
 
 // Login - GET /
 // Prikazi Login samo ako korisnik nije vec ulogiran (ensureGuest)
@@ -89,30 +107,42 @@ router.get('/likes', ensureAuth, async (req, res) => {
     }
 })
 
-async function getRecommendedShows(shows) {
-    let recommendedShows = []
+async function getRecommendedShows(shows, user) {
+    let alreadyRecommended = []
     for (let s of shows) {
-        let tempShows = []
-        let similarShows = await recommender.getSimilarDocuments(`${s.id}`, 0, 4)
-        let data = {
-            parent: s.name
+        const recommended = await Recommended.findOne({ parent_id: s.id }).lean()
+        if (recommended !== null) {
+            alreadyRecommended.push(s.id)
         }
-        for (let ss of similarShows) {
-            let resp = await axios.get(`https://api.tvmaze.com/shows/${ss.id}`)
-            let resp_data = await resp.data
-            tempShows.push(resp_data)
-        }
-        data.show = tempShows
-        recommendedShows.push(data)
     }
-    return recommendedShows
+
+    for (let s of shows) {
+        if (!alreadyRecommended.includes(s.id)) {
+            let similarShows = await recommender.getSimilarDocuments(`${s.id}`, 0, 4)
+            let tempShows = []
+            for (let ss of similarShows) {
+                let resp = await axios.get(`https://api.tvmaze.com/shows/${ss.id}`)
+                let resp_data = await resp.data
+                resp_data.rating.average = (resp_data.rating.average === null ? 'N/A' : resp_data.rating.average)
+                tempShows.push(resp_data)
+            }
+            await Recommended.create({
+                parent_id: s.id,
+                parent_name: s.name,
+                shows: tempShows,
+                user: user
+            })
+        }
+    }
 }
 
 // Recommendations - GET /recommendations
 router.get('/recommendations', ensureAuth, async (req, res) => {
     try {
         const shows = await Show.find({ user: req.user.id }).lean()
-        const recommendedShows = await getRecommendedShows(shows)
+        await getRecommendedShows(shows, req.user.id)
+
+        const recommendedShows = await Recommended.find({ user: req.user.id }).lean()
 
         res.render('recommendations', {
             name: req.user.firstName,

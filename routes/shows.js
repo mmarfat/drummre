@@ -3,6 +3,7 @@ const router = express.Router()
 const { ensureAuth } = require('../middleware/auth')
 
 const Show = require('../models/Show')
+const Recommended = require('../models/Recommended')
 
 // lajkanje showa
 router.post('/', ensureAuth, async (req, res) => {
@@ -23,6 +24,7 @@ router.post('/', ensureAuth, async (req, res) => {
 router.delete('/:id', ensureAuth, async (req, res) => {
     try {
         await Show.deleteOne({ id: req.params.id })
+        await Recommended.deleteOne({ parent_id: req.params.id })
         res.redirect('/likes')
     } catch (error) {
         console.log(error)
