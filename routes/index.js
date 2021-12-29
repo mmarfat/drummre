@@ -2,10 +2,30 @@ const express = require('express')
 const router = express.Router()
 const { ensureAuth, ensureGuest } = require('../middleware/auth')
 const axios = require('axios')
+const fs = require('fs')
 
 const Show = require('../models/Show')
 const Quote = require('../models/Quote')
 
+const ContentBasedRecommender = require('content-based-recommender')
+
+// Osnovno preporučivanje -> problem (API) nema sve serije dostupne odjednom.
+const recommender = new ContentBasedRecommender({
+    minScore: 0.1,
+    maxSimilarDocuments: 5
+})
+
+const documents = JSON.parse(fs.readFileSync(__dirname + '/shows.json'))
+
+var strippedDocuments = []
+documents.forEach(document => {
+    const picked = (({ id, combined_features }) => ({ id, combined_features }))(document);
+    picked.content = picked.combined_features;
+    delete picked.combined_features;
+    strippedDocuments.push(picked)
+})
+
+recommender.train(strippedDocuments)
 
 
 // Login - GET /
@@ -61,6 +81,42 @@ router.get('/likes', ensureAuth, async (req, res) => {
             name: req.user.firstName,
             image: req.user.image,
             shows
+        })
+    } catch (err) {
+        console.error(err)
+        res.render('errors/500')
+    }
+})
+
+async function getRecommendedShows(shows) {
+    let recommendedShows = []
+    for (let s of shows) {
+        let tempShows = []
+        let similarShows = await recommender.getSimilarDocuments(`${s.id}`, 0, 4)
+        let data = {
+            parent: s.name
+        }
+        for (let ss of similarShows) {
+            let resp = await axios.get(`https://api.tvmaze.com/shows/${ss.id}`)
+            let resp_data = await resp.data
+            tempShows.push(resp_data)
+        }
+        data.show = tempShows
+        recommendedShows.push(data)
+    }
+    return recommendedShows
+}
+
+// Recommendations - GET /recommendations
+router.get('/recommendations', ensureAuth, async (req, res) => {
+    try {
+        const shows = await Show.find({ user: req.user.id }).lean()
+        const recommendedShows = await getRecommendedShows(shows)
+
+        res.render('recommendations', {
+            name: req.user.firstName,
+            image: req.user.image,
+            recommendedShows
         })
     } catch (err) {
         console.error(err)

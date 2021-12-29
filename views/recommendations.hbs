@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/search.css">
+        <title>Next Episode</title>
+    </head>
+
+    <body>
+        {{#if recommendedShows}}
+        {{#each recommendedShows}}
+        <h5>Because you liked <b>{{parent}}</b>:</h5>
+        <main id="mymain">
+            {{#each show}}
+            <div class="show">
+                <img src="{{image.medium}}" alt="{{name}}" />
+                <div class="show-info">
+                    <h3>{{name}}</h3>
+                    <span>{{rating.average}}</span>
+                </div>
+            </div>
+            {{/each}}
+        </main>
+        <hr />
+        {{/each}}
+        {{else}}
+        <p>You have not liked any shows.</p>
+        {{/if}}
+    </body>
+
+</html>
