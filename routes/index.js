@@ -3,6 +3,7 @@ const router = express.Router()
 const { ensureAuth, ensureGuest } = require('../middleware/auth')
 const axios = require('axios')
 const fs = require('fs')
+const path = require("path");
 
 const Show = require('../models/Show')
 const Quote = require('../models/Quote')
@@ -15,7 +16,7 @@ const recommender = new ContentBasedRecommender({
     maxSimilarDocuments: 5
 })
 
-const documents = JSON.parse(fs.readFileSync(__dirname + '/shows.json'))
+const documents = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../public/data/shows.json")))
 
 var strippedDocuments = []
 documents.forEach(document => {
