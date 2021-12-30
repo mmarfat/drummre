@@ -1,0 +1,64 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.show-card{
+    display: flex;
+    margin-top: 2rem;
+    background-color: black;
+    box-shadow: 5px 10px 18px #888888;
+    border-radius: 2%;
+}
+
+.tags{
+    display: flex;
+    color: white;
+    margin-left: 0.9%;
+    width: 35%;
+    justify-content: space-between;
+}
+
+.tags h6{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    border-style: solid white;
+}
+
+.show-card img{
+    width: 30%;
+    margin-right: 4rem;
+}
+
+.show-card h4{
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    font-weight: 400;
+    text-align: left;
+    
+}
+
+.show-card h5{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    color: white;
+}
+
+#imdb{
+    margin-top: 3rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    width: 25%;
+    display: flex;
+    background-color: #f3ce13;
+    align-items: center;
+    color: black;
+}
+
+#imdb i{
+    padding-left: 0.5rem;
+    margin-right: 0.5rem;
+    font-size: 40px;
+}

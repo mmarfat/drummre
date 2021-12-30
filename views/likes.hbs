@@ -19,12 +19,19 @@
                     <h3>{{name}}</h3>
                     <span>{{rating}}</span>
                 </div>
-                <form action="/shows/{{id}}" method="POST" id="delete-form">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" class="btn red">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </form>
+                <div class='buttons'>
+                    <form action="/shows/{{id}}" method="POST" id="delete-form">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn red">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                    <form action="/shows/{{id}}" method="GET" id="get-info">
+                        <button type="submit" class="btn blue">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
             {{/each}}
         </main>

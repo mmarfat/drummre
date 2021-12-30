@@ -16,6 +16,11 @@ body {
     margin: 0;
 }
 
+.buttons{
+    display: flex;
+    justify-content: space-between;
+}
+
 .show{
     background-color: #373b69;
     border-radius: 3px;
