@@ -49,18 +49,18 @@ module.exports = (passport) => {
             clientID: process.env.FACEBOOK_APP_ID,
             clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
             callbackURL:'/auth/facebook/callback',
-            profileFields: ["first_name", "last_name", "id"],
+            profileFields: ["first_name", "last_name", "id", "email"],
         },
         async (accessToken, refreshToken, profile, done) => {
             console.log(profile);
             const { email, first_name, last_name } = profile._json;
             const newUser = {
                 googleId: profile.id,
-                displayName: profile.displayName,
+                displayName: first_name + " " + last_name,
                 firstName: first_name,
                 lastName: last_name,
-                image: profile.photos[0].value,
-                email: email
+                image: null,
+                email: "placeholder_email"
             }
 
             try {
