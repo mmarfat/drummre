@@ -8,6 +8,10 @@ p {
     text-align: center;
 }
 
+.google-login{
+    padding: 0 1.65rem;
+}
+
 .facebook-login {
     margin-top: 20px;
 }

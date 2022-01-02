@@ -46,20 +46,19 @@ module.exports = (passport) => {
     });
 
     passport.use(new FacebookStrategy({
-            clientID: process.env.FACEBOOK_APP_ID,
-            clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-            callbackURL:'/auth/facebook/callback',
-            profileFields: ["first_name", "last_name", "id", "email"],
-        },
+        clientID: process.env.FACEBOOK_APP_ID,
+        clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+        callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+        profileFields: ["first_name", "last_name", "id", "email", "photos"],
+    },
         async (accessToken, refreshToken, profile, done) => {
-            console.log(profile);
-            const { email, first_name, last_name } = profile._json;
+            const { email, first_name, last_name, picture } = profile._json;
             const newUser = {
                 googleId: profile.id,
                 displayName: first_name + " " + last_name,
                 firstName: first_name,
                 lastName: last_name,
-                image: null,
+                image: picture.data.url,
                 email: "placeholder_email"
             }
 

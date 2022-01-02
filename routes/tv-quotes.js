@@ -8,7 +8,7 @@ const TvQuote = require('../models/TvQuote')
 router.post('/likes', ensureAuth, async (req, res) => {
     try {
         req.body.user = req.user.id
-        const quote = await TvQuote.findOne({ quote: req.body.quote }).lean()
+        const quote = await TvQuote.findOne({ user: req.user.id, quote: req.body.quote }).lean()
         if (quote === null) {
             await TvQuote.create(req.body)
         }
@@ -22,7 +22,7 @@ router.post('/likes', ensureAuth, async (req, res) => {
 // brisanje showa iz like-ova
 router.delete('/likes/:id', ensureAuth, async (req, res) => {
     try {
-        await TvQuote.deleteOne({ id: req.params.id })
+        await TvQuote.deleteOne({ user: req.user.id, id: req.params.id })
         res.redirect('/quotes/likes/')
     } catch (error) {
         console.log(error)

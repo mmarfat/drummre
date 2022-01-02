@@ -25,7 +25,8 @@ function showShows(shows) {
         const showEl = document.createElement('div');
         showEl.classList.add('show')
 
-        showEl.innerHTML = `
+        if (id <= 5000) {
+            showEl.innerHTML = `
         <img
             src="${(image === null) ? 'https://domel.hr/wp-content/uploads/2020/12/placeholder.png' : image.medium}"
             alt="${name}"
@@ -46,7 +47,8 @@ function showShows(shows) {
 
         `;
 
-        main.appendChild(showEl)
+            main.appendChild(showEl)
+        }
 
     })
 }

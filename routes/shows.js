@@ -10,7 +10,7 @@ const Recommended = require('../models/Recommended')
 router.post('/', ensureAuth, async (req, res) => {
     try {
         req.body.user = req.user.id
-        const id = await Show.findOne({ id: req.body.id }).lean()
+        const id = await Show.findOne({ user: req.user.id, id: req.body.id }).lean()
         if (id === null) {
             await Show.create(req.body)
         }
@@ -24,8 +24,8 @@ router.post('/', ensureAuth, async (req, res) => {
 // brisanje showa iz like-ova
 router.delete('/:id', ensureAuth, async (req, res) => {
     try {
-        await Show.deleteOne({ id: req.params.id })
-        await Recommended.deleteOne({ parent_id: req.params.id })
+        await Show.deleteOne({ user: req.user.id, id: req.params.id })
+        await Recommended.deleteOne({ user: req.user.id, parent_id: req.params.id })
         res.redirect('/likes')
     } catch (error) {
         console.log(error)

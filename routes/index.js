@@ -116,7 +116,6 @@ router.get('/likes', ensureAuth, async (req, res) => {
 // Liked quotes - GET /quotes/likes
 router.get('/quotes/likes', ensureAuth, async (req, res) => {
     try {
-        console.log("Hello quotes likes")
         const tvQuotes = await TvQuote.find({ user: req.user.id }).lean()
         res.render('quote-likes', {
             name: req.user.firstName,
@@ -133,7 +132,7 @@ router.get('/quotes/likes', ensureAuth, async (req, res) => {
 async function getRecommendedShows(shows, user) {
     let alreadyRecommended = []
     for (let s of shows) {
-        const recommended = await Recommended.findOne({ parent_id: s.id }).lean()
+        const recommended = await Recommended.findOne({ user: user, parent_id: s.id }).lean()
         if (recommended !== null) {
             alreadyRecommended.push(s.id)
         }
