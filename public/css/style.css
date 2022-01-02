@@ -11,3 +11,19 @@ p {
 .facebook-login {
     margin-top: 20px;
 }
+
+.tv-quote-info{
+    color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1rem 1rem;
+    letter-spacing: 0.5px;
+    text-after-overflow: wrap;
+    flex-wrap: wrap;
+    width: 20rem;
+}
+
+.tv-quote-info span{
+    width: 10rem;
+}
