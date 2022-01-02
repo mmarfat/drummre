@@ -128,3 +128,7 @@ dist
 
 #intellij
 .idea
+
+
+# config files
+configs/config.env

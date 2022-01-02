@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/info.css">
+        <title>Next Episode</title>
+    </head>
+
+    <body>
+        <div class="show-card">
+            <img src="{{showImage}}" alt="{{showName}}">
+            <div class="show-info">
+                <h4>{{showName}}</h4>
+                <div class="tags">
+                    {{#each tags}}
+                    <h6>{{this}}</h6>
+                    {{/each}}
+                </div>
+                <h5>{{summary}}</h5>
+                {{#if imdb}}
+                <a id="imdb" href="https://www.imdb.com/title/{{imdb}}/">
+                    <i class="fab fa-imdb"></i>
+                    <p>Find on IMDB</p>
+                </a>
+                {{/if}}
+            </div>
+        </div>
+    </body>
+
+</html>
