@@ -7,6 +7,7 @@ const path = require("path");
 
 const Show = require('../models/Show')
 const Quote = require('../models/Quote')
+const TvQuote = require('../models/TvQuote')
 const Recommended = require('../models/Recommended')
 
 const ContentBasedRecommender = require('content-based-recommender')
@@ -92,6 +93,11 @@ router.get('/search', ensureAuth, async (req, res) => {
 
 })
 
+router.get('/tv-quotes', ensureAuth, async (req, res) => {
+    res.render('tv-quotes', {
+    })
+})
+
 // Likes - GET /likes
 router.get('/likes', ensureAuth, async (req, res) => {
     try {
@@ -106,6 +112,23 @@ router.get('/likes', ensureAuth, async (req, res) => {
         res.render('errors/500')
     }
 })
+
+// Liked quotes - GET /quotes/likes
+router.get('/quotes/likes', ensureAuth, async (req, res) => {
+    try {
+        console.log("Hello quotes likes")
+        const tvQuotes = await TvQuote.find({ user: req.user.id }).lean()
+        res.render('quote-likes', {
+            name: req.user.firstName,
+            image: req.user.image,
+            tvQuotes
+        })
+    } catch (err) {
+        console.error(err)
+        res.render('errors/500')
+    }
+})
+
 
 async function getRecommendedShows(shows, user) {
     let alreadyRecommended = []
