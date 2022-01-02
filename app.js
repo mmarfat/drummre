@@ -8,6 +8,8 @@ const session = require('express-session')
 const favicon = require('serve-favicon')
 const MongoStore = require('connect-mongo')
 const connectDB = require('./configs/db')
+const fs = require('fs');
+const https = require('https');
 
 // Učitaj konfiguracijsku datoteku
 dotenv.config({ path: './configs/config.env' })
@@ -19,6 +21,11 @@ require('./configs/passport')(passport)
 connectDB()
 
 const app = express()
+
+// Dodaj HTTPS
+const key = fs.readFileSync('./configs/cert/key.pem');
+const cert = fs.readFileSync('./configs/cert/cert.pem');
+const server = https.createServer({key: key, cert: cert }, app);
 
 // favicon sličica
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.png')));
@@ -59,4 +66,5 @@ app.use('/shows', require('./routes/shows'))
 
 const PORT = process.env.PORT || 3000
 
-app.listen(PORT, console.log(`Application started - PORT: ${PORT}`))
+// app.listen(PORT, console.log(`Application started - PORT: ${PORT}`));
+server.listen(PORT, console.log(`HTTPS Application started - PORT: ${PORT}`));
