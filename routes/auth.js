@@ -12,6 +12,18 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
     }
 )
 
+// Auth facebook - GET /auth/facebook
+router.get('/facebook', passport.authenticate("facebook"))
+
+// Facebook auth callback - GET /auth/facebook/callback
+router.get('/facebook/callback', passport.authenticate("facebook", {
+      failureRedirect: "/login?login_failed",
+    }),
+    function (req, res) {
+      res.redirect("/");
+    },
+)
+
 // Logout - /auth/logout
 router.get('/logout', (req, res) => {
     req.logout()

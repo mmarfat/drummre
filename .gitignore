@@ -126,5 +126,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+#intellij
+.idea
+
+
 # config files
 configs/config.env
