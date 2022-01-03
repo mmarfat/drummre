@@ -95,6 +95,8 @@ router.get('/search', ensureAuth, async (req, res) => {
 
 router.get('/tv-quotes', ensureAuth, async (req, res) => {
     res.render('tv-quotes', {
+        name: req.user.firstName,
+        image: req.user.image,
     })
 })
 

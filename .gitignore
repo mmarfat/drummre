@@ -132,3 +132,6 @@ dist
 
 # config files
 configs/config.env
+
+# quotes
+json-tv-quotes/api/node_modules/

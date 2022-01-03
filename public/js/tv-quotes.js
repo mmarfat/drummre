@@ -1,5 +1,5 @@
 const form = document.querySelector('form')
-const main = document.getElementById('mymain')
+const main = document.getElementById('mymaintv')
 
 async function getTvQuotes(url) {
   const resp = await fetch(url)
@@ -13,7 +13,7 @@ function showTvQuotes(tvQuotes) {
 
   tvQuotes.forEach(tvQuote => {
 
-    const {quote, source, author} = tvQuote
+    const { quote, source, author } = tvQuote
     const showEl = document.createElement('div');
     showEl.classList.add('show')
 
