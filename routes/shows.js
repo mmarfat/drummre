@@ -39,6 +39,7 @@ router.get('/:id', ensureAuth, async (req, res) => {
         const showImage = (showInfo.data.image === null) ? 'https://domel.hr/wp-content/uploads/2020/12/placeholder.png' : showInfo.data.image.original
         const showSummaryHTML = (showInfo.data.summary === null) ? 'No available summary.' : showInfo.data.summary
         const showSummary = showSummaryHTML.replace(/<[^>]*>?/gm, '');
+        const showRating = (showInfo.data.rating.average === null) ? 'N/A' : showInfo.data.rating.average
         res.render('info', {
             name: req.user.firstName,
             image: req.user.image,
@@ -46,6 +47,7 @@ router.get('/:id', ensureAuth, async (req, res) => {
             showImage: showImage,
             showName: showInfo.data.name,
             summary: showSummary,
+            rating: showRating,
             tags: showInfo.data.genres,
             imdb: showInfo.data.externals.imdb
         })

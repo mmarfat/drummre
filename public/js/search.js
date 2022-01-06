@@ -35,6 +35,7 @@ function showShows(shows) {
             <h3>${name}</h3>
             <span>${(rating.average === null) ? 'N/A' : rating.average}</span>
         </div>
+        <div class='buttons'>
         <form id="myform" method="post" action="/shows">
         <input type="hidden" id="id" name="id" value="${id}">
         <input type="hidden" id="name" name="name" value="${name}">
@@ -44,7 +45,12 @@ function showShows(shows) {
             <i class="fa fa-heart"></i>
         </button>
         </form>
-
+        <form action="/shows/${id}" method="GET" id="get-info">
+            <button type="submit" class="btn blue">
+                <i class="fas fa-info-circle"></i>
+            </button>
+        </form> 
+        </div>   
         `;
 
             main.appendChild(showEl)

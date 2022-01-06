@@ -25,6 +25,15 @@
                     <p>Find on IMDB</p>
                 </a>
                 {{/if}}
+                <form id="myform" method="post" action="/shows">
+                    <input type="hidden" id="id" name="id" value="{{id}}">
+                    <input type="hidden" id="name" name="name" value="{{showName}}">
+                    <input type="hidden" id="image" name="image" value="{{showImage}}">
+                    <input type="hidden" id="rating" name="rating" value="{{rating}}">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-heart"></i>
+                    </button>
+                </form>
             </div>
         </div>
     </body>

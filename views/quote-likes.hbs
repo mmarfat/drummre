@@ -15,14 +15,14 @@
             {{#each tvQuotes}}
             <div class="show">
                 <div class="tv-quote-info">
-                      <span>{{quote}}</span>
-                      <br>
+                    <span>{{quote}}</span>
+                    <br>
                     <span>- {{source}}</span>
                     <br>
                     <span>- {{author}}</span>
                 </div>
                 <div class='buttons'>
-                    <form action="/quotes/likes/{{id}}" method="POST" id="delete-form">
+                    <form action="/quotes/likes/{{quote}}" method="POST" id="delete-form">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" class="btn red">
                             <i class="fas fa-trash"></i>

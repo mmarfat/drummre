@@ -20,9 +20,9 @@ router.post('/likes', ensureAuth, async (req, res) => {
 })
 
 // brisanje quotea iz like-ova
-router.delete('/likes/:id', ensureAuth, async (req, res) => {
+router.delete('/likes/:quote', ensureAuth, async (req, res) => {
     try {
-        await TvQuote.deleteOne({ user: req.user.id, id: req.params.id })
+        await TvQuote.deleteOne({ user: req.user.id, quote: req.params.quote })
         res.redirect('/quotes/likes/')
     } catch (error) {
         console.log(error)
