@@ -17,10 +17,10 @@ router.get('/facebook', passport.authenticate("facebook"))
 
 // Facebook auth callback - GET /auth/facebook/callback
 router.get('/facebook/callback', passport.authenticate("facebook", {
-      failureRedirect: "/login?login_failed",
-    }),
+    failureRedirect: "/login?login_failed",
+}),
     function (req, res) {
-      res.redirect("/");
+        res.redirect("/search");
     },
 )
 

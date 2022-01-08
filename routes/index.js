@@ -56,12 +56,12 @@ router.get('/', ensureGuest, (req, res) => {
     })
 })
 
+
 // search - GET /search
 router.get('/search', ensureAuth, async (req, res) => {
     try {
 
         // Dohvacanje quotea (provjerava jel vec postoji quote za ovaj dan da ne zove api na svakom refreshu stranice)
-
         let date = new Date()
         const todaysQuote = await Quote.findOne({ date: `${date.getDate()}-${date.getMonth() + 1}-${date.getYear() + 1900}` }).lean()
         if (todaysQuote !== null) {
